@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Users */
+/* @var $addressModel app\models\Addresses */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -14,7 +15,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'login')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true , 'minlength' => 6]) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -22,9 +23,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sex')->dropDownList([ 'm' => 'M', 'f' => 'F', 'n' => 'N', ], ['prompt' => '']) ?>
 
-    <?= $form->field($model, 'date')->textInput() ?>
-
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+
+    <?php if(isset( $addressModel) ): ?>
+
+        <?= $this->render('../addresses/_form-fields', [ 'addressModel' => $addressModel , 'form' => $form ]); ?>
+
+    <?php endif; ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

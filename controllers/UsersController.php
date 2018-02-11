@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Users;
 use app\models\UsersSearch;
+use app\models\Addresses;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -58,20 +59,31 @@ class UsersController extends Controller
     }
 
     /**
-     * Creates a new Users model.
+     * Creates a new Users and Addresses models.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Users();
+        $userModel = new Users();
+        $addressModel = new Addresses();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($userModel->load(Yii::$app->request->post()) && $addressModel->load(Yii::$app->request->post())) {
+
+            $userModel->date = date("Y-m-d H:i:s");
+            $userModel->password = password_hash($userModel->password . $userModel->date, PASSWORD_DEFAULT);
+
+            if($userModel->save()){
+                $addressModel->user_id = $userModel->id;
+                $addressModel->save();
+
+                return $this->redirect(['view', 'id' => $userModel->id]);
+            }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $userModel,
+            'addressModel' => $addressModel
         ]);
     }
 

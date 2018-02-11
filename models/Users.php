@@ -33,7 +33,6 @@ class Users extends \yii\db\ActiveRecord
     {
         return [
             [['sex'], 'string'],
-            [['date'], 'safe'],
             [['login', 'name'], 'string', 'max' => 30],
             [['password'], 'string', 'max' => 70],
             [['surname'], 'string', 'max' => 40],
@@ -59,5 +58,10 @@ class Users extends \yii\db\ActiveRecord
             'date' => 'Date',
             'email' => 'Email',
         ];
+    }
+
+    public function getAddresses()
+    {
+        return $this->hasMany(Addresses::className(), ['user_id' => 'id']);
     }
 }

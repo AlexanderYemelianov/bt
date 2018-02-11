@@ -79,13 +79,13 @@ class UsersController extends Controller
             $userModel->name = ucfirst($userModel->name);
             $userModel->surname = ucfirst($userModel->surname);
 
-            /*if($userModel->save()) {
+            if($userModel->save()) {
                 $addressModel->user_id = $userModel->id;
                 $addressModel->country_code = strtoupper($addressModel->country_code);
                 $addressModel->save();
 
                 return $this->redirect(['view', 'id' => $userModel->id]);
-            }*/
+            }
             return $this->render('create', [
                 'model' => $userModel,
                 'addressModel' => $addressModel

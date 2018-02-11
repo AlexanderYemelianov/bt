@@ -25,11 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'login',
             'name',
             'surname',
-            'sex',
+            [
+                'attribute' => 'sex',
+                'value' => function($data){return constant(strtoupper($data->sex));}
+            ],
             'date',
             'email:email',
 

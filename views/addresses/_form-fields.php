@@ -8,8 +8,6 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<h3>Address form part</h3>
-
 <?= $form->field($addressModel, 'post')->textInput(['maxlength' => true]) ?>
 
 <?= $form->field($addressModel, 'country_code')->textInput(['maxlength' => true]) ?>

@@ -13,20 +13,21 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'login')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'login')->textInput(['maxlength' => true, 'minlength' => 4]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true , 'minlength' => 6]) ?>
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true, 'minlength' => 6]) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'surname')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sex')->dropDownList([ 'm' => 'M', 'f' => 'F', 'n' => 'N', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'sex')->dropDownList([ 'm' => constant('M'), 'f' => constant('F'), 'n' => constant('N'), ], ['prompt' => '']) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?php if(isset( $addressModel) ): ?>
 
+        <h2>Address form</h2>
         <?= $this->render('../addresses/_form-fields', [ 'addressModel' => $addressModel , 'form' => $form ]); ?>
 
     <?php endif; ?>

@@ -53,8 +53,12 @@ class UsersController extends Controller
      */
     public function actionView($id)
     {
+        $addressInstance = new Addresses();
+        $usersAddresses = $addressInstance->dataProvider($id);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'usersAddresses' => $usersAddresses
         ]);
     }
 
@@ -68,17 +72,24 @@ class UsersController extends Controller
         $userModel = new Users();
         $addressModel = new Addresses();
 
-        if ($userModel->load(Yii::$app->request->post()) && $addressModel->load(Yii::$app->request->post())) {
+        if ($userModel->load(Yii::$app->request->post()) && $addressModel->load(Yii::$app->request->post()) && is_numeric($addressModel->post)) {
 
             $userModel->date = date("Y-m-d H:i:s");
             $userModel->password = password_hash($userModel->password . $userModel->date, PASSWORD_DEFAULT);
+            $userModel->name = ucfirst($userModel->name);
+            $userModel->surname = ucfirst($userModel->surname);
 
-            if($userModel->save()){
+            /*if($userModel->save()) {
                 $addressModel->user_id = $userModel->id;
+                $addressModel->country_code = strtoupper($addressModel->country_code);
                 $addressModel->save();
 
                 return $this->redirect(['view', 'id' => $userModel->id]);
-            }
+            }*/
+            return $this->render('create', [
+                'model' => $userModel,
+                'addressModel' => $addressModel
+            ]);
         }
 
         return $this->render('create', [

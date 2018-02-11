@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "addresses".
@@ -39,7 +40,25 @@ class Addresses extends \yii\db\ActiveRecord
             [['city'], 'string', 'max' => 30],
             [['street'], 'string', 'max' => 50],
             [['building_number'], 'string', 'max' => 5],
+            ['post', 'is_numeric']
         ];
+    }
+
+    /**
+     * Check if input data is_numeric()
+     *
+     * @params string $attribute
+     * @return boolean
+    */
+    /*TODO: Not working*/
+    public function is_numeric($attribute)
+    {
+        if (is_numeric($this->$attribute) ) {
+            return true;
+        }
+
+        $this->addError($attribute, 'Should contain numbers only.');
+        return false;
     }
 
     /**
@@ -59,8 +78,35 @@ class Addresses extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * Models relationship Address to User
+    */
     public function getUser()
     {
         return $this->hasOne(Users::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * Creates data provider instance
+     *
+     * @params int $user_id (optional)
+     *
+     * @return ActiveDataProvider
+     */
+    public function dataProvider($user_id = null)
+    {
+        $query = Addresses::find();
+
+        if($user_id){
+            $query = Addresses::find()->where(['user_id' => $user_id]);
+        }
+
+        return $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 5,
+            ],
+        ]);
+
     }
 }
